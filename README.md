@@ -1,3 +1,3 @@
 # CS20 Operator
 
-The Operator website
+This repository contains the Operator website, while the main repository contains the Customer website
