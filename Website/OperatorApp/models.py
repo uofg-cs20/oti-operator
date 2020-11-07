@@ -6,10 +6,10 @@ class Operator(models.Model):
     
     homepage = models.URLField()
     api_url = models.URLField()
-    default_language = models.CharField(max_length=40)
+    default_language = models.CharField(default='English', max_length=40)
     phone = models.IntegerField(max_length=20)
     email = models.EmailField()
-    active = models.BooleanField()
+    active = models.BooleanField(default=True)
 
 
     def __str__(self):
@@ -19,7 +19,7 @@ class Operator(models.Model):
 
 class Mode(models.Model):
     short_desc = models.CharField(max_length=50)
-    long_desc = models.CharField(max_length=8000)
+    long_desc = models.CharField(max_length=8000, null=True)
 
     def __str__(self):
         return self.short_desc
