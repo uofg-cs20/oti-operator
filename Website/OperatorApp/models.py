@@ -7,7 +7,7 @@ class Operator(models.Model):
     homepage = models.URLField()
     api_url = models.URLField()
     default_language = models.CharField(default='English', max_length=40)
-    phone = models.IntegerField(max_length=20)
+    phone = models.CharField(max_length=20)
     email = models.EmailField()
     active = models.BooleanField(default=True)
 
