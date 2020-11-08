@@ -1,25 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-def index(request):
-    return render(request, 'OperatorApp/index.html')
-
 # login operator
 def login(request): 
-    pass
+    # TODO
+    return render(request, 'OperatorApp/login.html')
 
 # log out operator
 def logout(request):
-    pass
-
-# display operator profile
-def profile(request):
-    pass
+    # TODO
+    return render(request, 'OperatorApp/login.html')
 
 # edit operator profile
 def edit_profile(request):
-    pass
+    # TODO
+    return render(request, 'OperatorApp/edit-operator.html')
 
-# display all operators (when an operator logs in)
+# display all operators (after an operator logs in)
 def operators(request):
+    # TODO
     pass
