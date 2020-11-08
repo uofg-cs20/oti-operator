@@ -34,7 +34,14 @@ def operator_logout(request):
 # edit operator profile
 @login_required
 def edit_profile(request):
-    return render(request, 'OperatorApp/edit-operator.html')
+    user = request.user
+    try:
+        operator_info = Operator.objects.get(admin=user)
+    except:
+        operator_info = None
+
+    context_dict = {'operator': operator_info}
+    return render(request, 'OperatorApp/edit-operator.html', context_dict)
 
 # display all operators (after an operator logs in)
 @login_required
