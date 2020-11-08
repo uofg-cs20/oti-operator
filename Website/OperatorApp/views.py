@@ -1,12 +1,35 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views import View
+from django.core.serializers import serialize
 
 from .forms import LoginForm
 from OperatorApp.models import Operator
+
+
+class OperatorView(View):
+
+    def get(self, request):
+        params = list(request.GET.items())
+        operators_list = Operator.objects.all()
+        if params[0][0] == "*pk":
+            try:
+                operators_list = Operator.objects.filter(pk=params[0][1])
+                if not operators_list:
+                    raise ValueError
+            except ValueError:
+                data = {'invalid data':'0'}
+                return JsonResponse(data)
+        serialized_operators = serialize('python', operators_list)
+        data = {
+            'operators': serialized_operators,
+        }
+        return JsonResponse(data)
+
 
 # login operator
 def operator_login(request):
@@ -25,11 +48,13 @@ def operator_login(request):
 
     return render(request, 'OperatorApp/login.html', {"form": form})
 
+
 # log out operator
 @login_required
 def operator_logout(request):
     logout(request)
     return redirect(reverse('operator:login'))
+
 
 # edit operator profile
 @login_required
@@ -42,6 +67,7 @@ def edit_profile(request):
 
     context_dict = {'operator': operator_info}
     return render(request, 'OperatorApp/edit-operator.html', context_dict)
+
 
 # display all operators (after an operator logs in)
 @login_required

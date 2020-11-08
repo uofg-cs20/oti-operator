@@ -9,4 +9,5 @@ urlpatterns = [
     path('logout/', views.operator_logout, name='logout'),
     path('edit/', views.edit_profile, name='edit'),
     path('operators/', views.operators, name='operators'),
+    path('api/', views.OperatorView.as_view()),
 ]
