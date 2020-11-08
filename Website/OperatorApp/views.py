@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from .forms import LoginForm
+from OperatorApp.models import Operator
 
 # login operator
-def operator_login(request): 
+def operator_login(request):
     form = LoginForm()
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -38,6 +39,7 @@ def edit_profile(request):
 # display all operators (after an operator logs in)
 @login_required
 def operators(request):
-    context_dict = {}
-    
-    return render(request, 'OperatorApp/operators.html', context=context_dict)
+    operator_info = Operator.objects.order_by('name')
+    context_dict = {'operators': operator_info}
+
+    return render(request, 'OperatorApp/operators.html', context_dict)
