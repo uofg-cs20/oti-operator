@@ -8,17 +8,19 @@
 
 <!-- Display a form for logging in -->
 {% block content %}
-    <br>
+<div class="container">
+    <h1 class="text-center my-4">Login</h1>
     <div class="text-center">
-        <strong>Login</strong>
         <form id="login_form" method="post" action="{% url 'operator:login' %}">
             {% csrf_token %}
 
             {{ form|crispy }}
             <br />
             <div class="text-center">
-                <input type="submit" class="btn btn-md btn-primary" value="LOGIN" />
+                <input type="submit" class="btn btn-md btn-primary" value="Log in" />
             </div>
         </form>
     </div>
+</div>
+
 {% endblock %}
