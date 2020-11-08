@@ -31,8 +31,8 @@ def operator_logout(request):
     return redirect(reverse('operator:login'))
 
 # edit operator profile
+@login_required
 def edit_profile(request):
-    # TODO
     return render(request, 'OperatorApp/edit-operator.html')
 
 # display all operators (after an operator logs in)
