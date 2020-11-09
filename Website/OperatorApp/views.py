@@ -16,14 +16,18 @@ class OperatorView(View):
     def get(self, request):
         params = list(request.GET.items())
         operators_list = Operator.objects.all()
-        if params[0][0] == "*pk":
-            try:
-                operators_list = Operator.objects.filter(pk=params[0][1])
-                if not operators_list:
-                    raise ValueError
-            except ValueError:
-                data = {'invalid data':'0'}
-                return JsonResponse(data)
+        if params:
+            if params[0][0] == "pk":
+                try:
+                    if params[0][0] == "pk":
+                        operators_list = Operator.objects.filter(pk=params[0][1])
+                        if not operators_list:
+                            raise ValueError
+                except ValueError:
+                    data = {'invalid data': '0'}
+                    return JsonResponse(data)
+                else:
+                    pass
         serialized_operators = serialize('python', operators_list)
         data = {
             'operators': serialized_operators,
