@@ -11,23 +11,25 @@ from .forms import LoginForm
 from OperatorApp.models import Operator
 
 
+
+'''
+Checks the data that comes inside params: /api/<params>
+checks the pk value sent and returns specified operator
+also checks for invalid/no pk values and returns entire list 
+'''
 class OperatorView(View):
 
     def get(self, request):
         params = list(request.GET.items())
-        operators_list = Operator.objects.all()
         if params:
-            if params[0][0] == "pk":
-                try:
-                    if params[0][0] == "pk":
-                        operators_list = Operator.objects.filter(pk=params[0][1])
-                        if not operators_list:
-                            raise ValueError
-                except ValueError:
-                    data = {'invalid data': '0'}
-                    return JsonResponse(data)
-                else:
-                    pass
+            if (params[0][0] == "pk") and (params[0][1]):
+                operators_list = Operator.objects.filter(pk=params[0][1])
+                if not operators_list:
+                    operators_list = Operator.objects.all()
+            else:
+                operators_list = Operator.objects.all()
+        else:
+            operators_list = Operator.objects.all()
         serialized_operators = serialize('python', operators_list)
         data = {
             'operators': serialized_operators,
