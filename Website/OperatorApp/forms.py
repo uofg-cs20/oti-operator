@@ -33,7 +33,7 @@ class OperatorForm(forms.ModelForm):
     default_language = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}))
     phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}))
     email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}))
-    active = forms.BooleanField(required=True)
+    active = forms.BooleanField(required=False)
 
     class Meta:
         model = Operator
