@@ -5,19 +5,19 @@ This repository contains the Operator website, while the main repository contain
 ## Installation  
 
 Install requirements:  
-'cd cs20-operator'  
-'pip install -r requirements.txt'  
+`cd cs20-operator`  
+`pip install -r requirements.txt`  
 
 Ensure database structure is up to date:  
-'cd Website'  
-'python manage.py makemigrations'  
-'python manage.py migrate'  
+`cd Website`  
+`python manage.py makemigrations`  
+`python manage.py migrate`  
 
 Run the population script:  
-'python populate.py'  
+`python populate.py`  
 
 Run the server:  
-'python manage.py runserver'  
+`python manage.py runserver`  
 
 Log in as an operator (homepage):  
 username: scotrail / firstbus / citylink (see population script)  
