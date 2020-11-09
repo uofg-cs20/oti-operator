@@ -1,13 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.views import View
-from django.core.serializers import serialize
 
-from .forms import LoginForm
+from .forms import LoginForm, OperatorForm
 from OperatorApp.models import Operator
 
 
@@ -65,14 +63,19 @@ def operator_logout(request):
 # edit operator profile
 @login_required
 def edit_profile(request):
-    user = request.user
-    try:
-        operator_info = Operator.objects.get(admin=user)
-    except:
-        operator_info = None
+    operator = Operator.objects.get(admin=request.user)
+    form = OperatorForm(instance=operator)
 
-    context_dict = {'operator': operator_info}
-    return render(request, 'OperatorApp/edit-operator.html', context_dict)
+    if request.method == 'POST':
+        form = OperatorForm(request.POST, instance=operator)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Operator updated successfully.")
+            return redirect(reverse('operator:edit'))
+
+    return render(request, 'OperatorApp/edit-operator.html', {'form': form})
+
 
 
 # display all operators (after an operator logs in)

@@ -1,43 +1,33 @@
 {% extends 'OperatorApp/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     Edit
 {% endblock %}
 
-<!-- This template will display a form for updating operator info -->
 {% block content %}
-  <table class="table table-striped table-hover">
-    {% if operator %}
-    <tbody>
-      <tr>
-        <th>Name</th>
-        <th>Modes</th>
-        <th>Homepage</th>
-        <th>API URL</th>
-        <th>Language</th>
-        <th>Phone number</th>
-        <th>Email Address</th>
-        <th>Active</th>
-      </tr>
-      <tr>
-        <td>{{operator.name}}</td>
-        <td>
-          <ul>
-            {% for mode in operator.modes.all %}
-            <li>{{mode.short_desc}}</li>
-            {% endfor %}
-          </ul>
-        </td>
-        <td>{{operator.homepage}}</td>
-        <td>{{operator.api_url}}</td>
-        <td>{{operator.default_language}}</td>
-        <td>{{operator.phone}}</td>
-        <td>{{operator.email}}</td>
-        <td>{{operator.active}}</td>
-      </tr>
-    </tbody>
-  </table>
-  {% else %}
-  <strong> There is no Operator linked to this account </strong>
-  {% endif %}
+
+<div class="container">
+
+  <h1 class="text-center my-4">Edit Operator</h1>
+
+  <div class="card mx-auto" style="width: 25em;">
+    <div class="card-body">
+      <form method='post' action="{% url 'operator:edit' %}">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <div class="text-center">
+          <button type="submit" class="btn btn-md btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
+  
+
+
+
