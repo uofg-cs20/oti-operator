@@ -11,9 +11,8 @@
 
   <h1 class="text-center my-4">Edit Operator</h1>
 
-  
-  <div style="width: 100%;">
-    <div style="display:table; margin: 0 auto;">
+  <div class="card mx-auto" style="width: 25em;">
+    <div class="card-body">
       <form method='post' action="{% url 'operator:edit' %}">
         {% csrf_token %}
         <table>
@@ -25,8 +24,6 @@
       </form>
     </div>
   </div>
-
-
 </div>
 
 {% endblock %}
