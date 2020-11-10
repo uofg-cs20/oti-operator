@@ -23,7 +23,7 @@ class LoginForm(forms.Form):
 
 
 class OperatorForm(forms.ModelForm):
-    name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}))
+    name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}), disabled=True)
     modes = forms.ModelMultipleChoiceField(
         queryset=Mode.objects.all(),
         widget=forms.CheckboxSelectMultiple(attrs={'class' : 'form-group'}),
