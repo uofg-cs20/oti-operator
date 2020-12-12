@@ -9,7 +9,7 @@ from django.core.serializers import serialize
 from django.contrib import messages
 
 from .forms import LoginForm, OperatorForm
-from OperatorApp.models import Operator
+from OperatorApp.models import Operator, Mode
 
 
 
@@ -23,19 +23,21 @@ class OperatorView(View):
     def get(self, request):
         params = list(request.GET.items())
         if params:
-            if (params[0][0] == "pk") and (params[0][1]):
+            if (params[0][0] == "operator") and (params[0][1]):
                 operators_list = Operator.objects.filter(pk=params[0][1])
                 if not operators_list:
                     operators_list = Operator.objects.all()
-            else:
-                operators_list = Operator.objects.all()
-        else:
-            operators_list = Operator.objects.all()
-        serialized_operators = serialize('python', operators_list)
-        data = {
-            'operators': serialized_operators,
-        }
-        return JsonResponse(data)
+                serialized_operators = serialize('python', operators_list)
+                data = {'operators': serialized_operators}
+                return JsonResponse(data['operators'][0])
+            if (params[0][0] == "mode") and (params[0][1]):
+                modes_list = Mode.objects.filter(pk=params[0][1])
+                if not modes_list:
+                    modes_list = Operator.objects.all()
+                serialized_operators = serialize('python', modes_list)
+                data = {'modes': serialized_operators}
+                return JsonResponse(data['modes'][0])
+        return JsonResponse({'null': "null"})
 
 
 # login operator
