@@ -17,7 +17,10 @@ Run the population script:
 `python populate.py`  
 
 Run the server:  
-`python manage.py runserver`  
+`python manage.py runserver`
+
+Run the tests:  
+`python manage.py test --pattern="*_test.py"`
 
 Log in as an operator (homepage):  
 username: scotrail / firstbus / citylink (see population script)  

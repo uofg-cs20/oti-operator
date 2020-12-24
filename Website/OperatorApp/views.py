@@ -70,17 +70,14 @@ def operator_logout(request):
 def edit_profile(request):
     operator = Operator.objects.get(admin=request.user)
     form = OperatorForm(instance=operator)
-
     if request.method == 'POST':
         form = OperatorForm(request.POST, instance=operator)
-
         if form.is_valid():
             form.save()
             messages.success(request, "Operator updated successfully.")
             return redirect(reverse('operator:edit'))
 
     return render(request, 'OperatorApp/edit-operator.html', {'form': form})
-
 
 
 # display all operators (after an operator logs in)

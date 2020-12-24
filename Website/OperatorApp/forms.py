@@ -26,7 +26,7 @@ class OperatorForm(forms.ModelForm):
     name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}), disabled=True)
     modes = forms.ModelMultipleChoiceField(
         queryset=Mode.objects.all(),
-        widget=forms.CheckboxSelectMultiple(attrs={'class' : 'form-group'}),
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-group'}),
     )
     homepage = forms.URLField(required=False, widget=forms.TextInput(attrs={'class' : 'form-group'}))
     api_url = forms.URLField(required=False, widget=forms.TextInput(attrs={'class' : 'form-group'}))
