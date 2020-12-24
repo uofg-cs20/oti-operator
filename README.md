@@ -29,3 +29,7 @@ password: 1234
 Log in as website admin (/admin):  
 username: dev  
 password: 1234  
+
+To view the API visit   
+Operators: `http://127.0.0.1:8000/api/?operator=<pk>`   
+Mode: `http://127.0.0.1:8000/api/?mode=<pk>`
