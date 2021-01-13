@@ -23,20 +23,22 @@ class OperatorView(View):
     def get(self, request):
         params = list(request.GET.items())
         if params:
-            if (params[0][0] == "operator") and (params[0][1]):
-                operators_list = Operator.objects.filter(pk=params[0][1])
-                if not operators_list:
+            if (params[0][0] == "operator") and (params[0][1] or params[0][1] == "all"):
+                if params[0][1] == 'all':
                     operators_list = Operator.objects.all()
+                else:
+                    operators_list = Operator.objects.filter(pk=params[0][1])
                 serialized_operators = serialize('python', operators_list)
                 data = {'operators': serialized_operators}
-                return JsonResponse(data['operators'][0])
-            if (params[0][0] == "mode") and (params[0][1]):
-                modes_list = Mode.objects.filter(pk=params[0][1])
-                if not modes_list:
-                    modes_list = Operator.objects.all()
+                return JsonResponse(data)
+            if (params[0][0] == "mode") and (params[0][1] or params[0][1] == "all"):
+                if params[0][1] == 'all':
+                    modes_list = Mode.objects.all()
+                else:
+                    modes_list = Mode.objects.filter(pk=params[0][1])
                 serialized_operators = serialize('python', modes_list)
                 data = {'modes': serialized_operators}
-                return JsonResponse(data['modes'][0])
+                return JsonResponse(data)
         return JsonResponse({'null': "null"})
 
 
