@@ -15,7 +15,7 @@ def choice(all_modes):
 
 def populate():
     # delete if the database is already populated
-    if User.objects.filter(username='superuser').exists():
+    if User.objects.filter(username='dev').exists():
         User.objects.all().delete()
     if Mode.objects.all():
         Mode.objects.all().delete()

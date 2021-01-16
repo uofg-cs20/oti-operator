@@ -10,7 +10,7 @@ from django.contrib import messages
 
 from .forms import LoginForm, OperatorForm
 from OperatorApp.models import Operator, Mode
-
+from .Hypercat import hypercat
 
 
 '''
@@ -29,8 +29,9 @@ class OperatorView(View):
                 else:
                     operators_list = Operator.objects.filter(pk=params[0][1])
                 serialized_operators = serialize('python', operators_list)
-                data = {'operators': serialized_operators}
-                return JsonResponse(data)
+                #data = {'operators': serialized_operators}
+                hc = hypercat.createOperatorHypercat(serialized_operators, Mode.objects.all())
+                return JsonResponse(hc)
             if (params[0][0] == "mode") and (params[0][1] or params[0][1] == "all"):
                 if params[0][1] == 'all':
                     modes_list = Mode.objects.all()
