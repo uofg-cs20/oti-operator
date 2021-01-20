@@ -5,6 +5,5 @@ test_app:
     - python manage.py test
     - echo test!
 
-job:
-  tags:
+ tags:
     - docker
