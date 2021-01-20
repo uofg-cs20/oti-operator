@@ -1,6 +1,6 @@
 test_app:
   tags:
-    - django
+    - docker
 
   script:
     - pip install -r requirements.txt
