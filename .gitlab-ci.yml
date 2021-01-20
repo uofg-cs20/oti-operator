@@ -1,4 +1,7 @@
 test_app:
+  tags:
+    - ruby
+
   script:
     - pip install -r requirements.txt
     - cd Website
