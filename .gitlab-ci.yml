@@ -1,6 +1,6 @@
 test_app:
   tags:
-    - ruby
+    - django
 
   script:
     - pip install -r requirements.txt
