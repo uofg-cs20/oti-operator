@@ -4,3 +4,7 @@ test_app:
     - cd Website
     - python manage.py test
     - echo test!
+
+job:
+  tags:
+    - docker
