@@ -45,8 +45,12 @@ class OperatorTestCase(TestCase):
         print('Mode API Test')
         response = self.client.get('/api/?mode=1')
         content = json.loads(response.content)
-        comparisonDict = {"modes": [{"model": "OperatorApp.mode", "pk": 1, "fields":
-            {"short_desc": "on foot", "long_desc": "for complete end-to-end journey mapping"}}]}
+        comparisonDict = {'catalogue-metadata': [{'rel': 'urn:X-hypercat:rels:isContentType', 'val': 'application/vnd.hypercat.catalogue+json'},
+                         {'rel': 'urn:X-hypercat:rels:hasDescription:en', 'val': 'OpenTransport Mode Catalogue'},
+                         {'rel': 'urn:X-hypercat:rels:supportsSearch', 'val': 'urn:X-hypercat:search:simple'}],
+                          'items': [{'href': '1', 'item-metadata': [{'rel': 'urn:X-hypercat:rels:isContentType',
+                          'val': 'application/vnd.hypercat.catalogue+json'}, {'rel': 'urn:X-hypercat:rels:hasDescription:en', 'val': '1'},
+                         {'rel': 'hasShortDesc', 'val': 'on foot'}, {'rel': 'hasLongDesc', 'val': 'for complete end-to-end journey mapping'}]}]}
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(content, comparisonDict)

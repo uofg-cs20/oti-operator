@@ -237,10 +237,19 @@ def createOperatorHypercat(md, modes):
         no+=1
     return h.asJSON()
 
-#def createModeHypercat(md):
-#    h = Hypercat("OpenTransport Mode Catalogue")
-#    h.supportsSimpleSearch()
-#    no = 0
+
+def createModeHypercat(modes):
+    h = Hypercat("OpenTransport Mode Catalogue")
+    h.supportsSimpleSearch()
+    no = 0
+    for i in modes:
+        h2 = Hypercat(str(i.pk))
+        h2.addRelation('hasShortDesc', i.short_desc)
+        h2.addRelation('hasLongDesc', i.long_desc)
+        h.addItem(h2, str(i.pk))
+        no+=1
+    return h.asJSON()
+
 
 # if __name__ == '__main__':
     # # Unit tests

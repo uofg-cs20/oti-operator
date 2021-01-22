@@ -1,5 +1,4 @@
 import os, random
-from django.db.models import F
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'OperatorWebsite.settings')
 
 import django

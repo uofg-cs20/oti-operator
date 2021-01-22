@@ -38,8 +38,9 @@ class OperatorView(View):
                 else:
                     modes_list = Mode.objects.filter(pk=params[0][1])
                 serialized_operators = serialize('python', modes_list)
-                data = {'modes': serialized_operators}
-                return JsonResponse(data)
+                hc = hypercat.createModeHypercat(modes_list)
+                #data = {'modes': serialized_operators}
+                return JsonResponse(hc)
         return JsonResponse({'null': "null"})
 
 
