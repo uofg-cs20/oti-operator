@@ -23,16 +23,16 @@ class LoginForm(forms.Form):
 
 
 class OperatorForm(forms.ModelForm):
-    name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}), disabled=True)
+    name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}), disabled=True)
     modes = forms.ModelMultipleChoiceField(
         queryset=Mode.objects.all(),
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-group'}),
+        widget=forms.CheckboxSelectMultiple(attrs={'id':'modes'}),
     )
-    homepage = forms.URLField(required=False, widget=forms.TextInput(attrs={'class' : 'form-group'}))
-    api_url = forms.URLField(required=False, widget=forms.TextInput(attrs={'class' : 'form-group'}))
-    default_language = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}))
-    phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}))
-    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class' : 'form-group'}))
+    homepage = forms.URLField(required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    api_url = forms.URLField(required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    default_language = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class' : 'form-control'}))
     active = forms.BooleanField(required=False)
 
     class Meta:
