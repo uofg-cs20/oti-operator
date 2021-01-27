@@ -214,41 +214,27 @@ def loads(inputStr):
 
 #md is model dictionary
 def createOperatorHypercat(md, modes):
+    openT = 'urn:X-opentransport:rels:'
     h = Hypercat("OpenTransport Operator Catalogue")
     h.supportsSimpleSearch()
     no = 0
     for i in md:
         h2 = Hypercat(i['fields']['name'])
-        h2.addRelation('hasHomepage', i['fields']['homepage'])
-        h2.addRelation('hasID', i['pk'])
-        h2.addRelation('hasEmail', i['fields']['email'])
-        h2.addRelation('hasPhone', i['fields']['phone'])
-        h2.addRelation('hasDefaultLanguage', i['fields']['default_language'])
+        h2.hasHomepage(i['fields']['homepage'])
+        h2.addRelation(openT+'hasID', i['pk'])
+        h2.addRelation(openT+'hasEmail', i['fields']['email'])
+        h2.addRelation(openT+'hasPhone', i['fields']['phone'])
+        h2.addRelation(openT+'hasDefaultLanguage', i['fields']['default_language'])
         if i['fields']['modes']:
-            h2.addRelation('hasNumberModes', len(i['fields']['modes']))
+            h2.addRelation(openT+'hasNumberModes', len(i['fields']['modes']))
             count = 1
             for mode in i['fields']['modes']:
-                h2.addRelation('hasNumberMode#Code'+str(count), mode)
-                h2.addRelation('hasNumberMode#Description' + str(count), modes.get(pk=mode).short_desc)
+                h2.addRelation(openT+'hasNumberMode'+str(count)+'#Code', mode)
+                h2.addRelation(openT+'hasNumberMode'+str(count)+'#Description', modes.get(pk=mode).short_desc)
                 count += 1
-
-        h2.addRelation('api_url', i['fields']['api_url'])
-        h.addItem(h2, i['fields']['homepage']+str(no))
+        h.addItem(h2, i['fields']['api_url'])
         no+=1
-    return h.asJSON()
-
-
-def createModeHypercat(modes):
-    h = Hypercat("OpenTransport Mode Catalogue")
-    h.supportsSimpleSearch()
-    no = 0
-    for i in modes:
-        h2 = Hypercat(str(i.pk))
-        h2.addRelation('hasShortDesc', i.short_desc)
-        h2.addRelation('hasLongDesc', i.long_desc)
-        h.addItem(h2, str(i.pk))
-        no+=1
-    return h.asJSON()
+    return [h.asJSON()]
 
 
 # if __name__ == '__main__':

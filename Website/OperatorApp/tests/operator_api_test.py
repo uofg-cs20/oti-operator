@@ -8,6 +8,8 @@ from ..views import operator_login, edit_profile
 
 
 class OperatorTestCase(TestCase):
+
+
     def setUp(self):
         self.client = Client(HTTP_USER_AGENT='Mozilla/5.0')
         self.admin1 = User.objects.create_user(username='TestAdmin', password='1234', email='test@operator.co.uk.',
@@ -22,21 +24,23 @@ class OperatorTestCase(TestCase):
         self.operator1.modes.add(on_foot.id)
 
     def test_operator_api(self):
+        self.maxDiff = None
         print('Operator API Test')
+        openT = 'urn:X-opentransport:rels:'
         response = self.client.get('/api/?operator=1')
         content = json.loads(response.content)
-        comparisonDict = {'catalogue-metadata': [
+        comparisonDict = [{'catalogue-metadata': [
             {'rel': 'urn:X-hypercat:rels:isContentType', 'val': 'application/vnd.hypercat.catalogue+json'},
             {'rel': 'urn:X-hypercat:rels:hasDescription:en', 'val': 'OpenTransport Operator Catalogue'},
             {'rel': 'urn:X-hypercat:rels:supportsSearch', 'val': 'urn:X-hypercat:search:simple'}], 'items': [
-            {'href': 'https://operator.co.uk0', 'item-metadata': [
+            {'href': 'https://test.opentransport.co.uk', 'item-metadata': [
                 {'rel': 'urn:X-hypercat:rels:isContentType', 'val': 'application/vnd.hypercat.catalogue+json'},
                 {'rel': 'urn:X-hypercat:rels:hasDescription:en', 'val': 'TestOperator'},
-                {'rel': 'hasHomepage', 'val': 'https://operator.co.uk'}, {'rel': 'hasID', 'val': 1},
-                {'rel': 'hasEmail', 'val': 'test@operator.co.uk'}, {'rel': 'hasPhone', 'val': '07083249084'},
-                {'rel': 'hasDefaultLanguage', 'val': 'English'}, {'rel': 'hasNumberModes', 'val': 1},
-                {'rel': 'hasNumberMode#Code1', 'val': 1}, {'rel': 'hasNumberMode#Description1', 'val': 'on foot'},
-                {'rel': 'api_url', 'val': 'https://test.opentransport.co.uk'}]}]}
+                {'rel': 'urn:X-hypercat:rels:hasHomepage', 'val': 'https://operator.co.uk'}, {'rel': openT+'hasID', 'val': 1},
+                {'rel': openT+'hasEmail', 'val': 'test@operator.co.uk'}, {'rel': openT+'hasPhone', 'val': '07083249084'},
+                {'rel': openT+'hasDefaultLanguage', 'val': 'English'}, {'rel': openT+'hasNumberModes', 'val': 1},
+                {'rel': openT+'hasNumberMode1#Code', 'val': 1}, {'rel': openT+'hasNumberMode1#Description', 'val': 'on foot'},
+                ]}]}]
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(content, comparisonDict)
@@ -45,12 +49,6 @@ class OperatorTestCase(TestCase):
         print('Mode API Test')
         response = self.client.get('/api/?mode=1')
         content = json.loads(response.content)
-        comparisonDict = {'catalogue-metadata': [{'rel': 'urn:X-hypercat:rels:isContentType', 'val': 'application/vnd.hypercat.catalogue+json'},
-                         {'rel': 'urn:X-hypercat:rels:hasDescription:en', 'val': 'OpenTransport Mode Catalogue'},
-                         {'rel': 'urn:X-hypercat:rels:supportsSearch', 'val': 'urn:X-hypercat:search:simple'}],
-                          'items': [{'href': '1', 'item-metadata': [{'rel': 'urn:X-hypercat:rels:isContentType',
-                          'val': 'application/vnd.hypercat.catalogue+json'}, {'rel': 'urn:X-hypercat:rels:hasDescription:en', 'val': '1'},
-                         {'rel': 'hasShortDesc', 'val': 'on foot'}, {'rel': 'hasLongDesc', 'val': 'for complete end-to-end journey mapping'}]}]}
-
+        comparisonDict = [{'id': 1, 'short_desc': 'on foot', 'long_desc': 'for complete end-to-end journey mapping'}]
         self.assertEqual(response.status_code, 200)
         self.assertEqual(content, comparisonDict)

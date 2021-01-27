@@ -20,6 +20,13 @@ also checks for invalid/no pk values and returns entire list
 '''
 class OperatorView(View):
 
+    def clean_modes(self, modes):
+        cleaned_modes = []
+        for mode in modes:
+            cleaned_modes.append({'id':mode['pk'], 'short_desc': mode['fields']['short_desc'], 'long_desc': mode['fields']['long_desc']})
+
+        return cleaned_modes
+
     def get(self, request):
         params = list(request.GET.items())
         if params:
@@ -31,16 +38,15 @@ class OperatorView(View):
                 serialized_operators = serialize('python', operators_list)
                 #data = {'operators': serialized_operators}
                 hc = hypercat.createOperatorHypercat(serialized_operators, Mode.objects.all())
-                return JsonResponse(hc)
+                return JsonResponse(hc, safe=False)
             if (params[0][0] == "mode") and (params[0][1] or params[0][1] == "all"):
                 if params[0][1] == 'all':
                     modes_list = Mode.objects.all()
                 else:
                     modes_list = Mode.objects.filter(pk=params[0][1])
                 serialized_operators = serialize('python', modes_list)
-                hc = hypercat.createModeHypercat(modes_list)
-                #data = {'modes': serialized_operators}
-                return JsonResponse(hc)
+                data = self.clean_modes(serialized_operators)
+                return JsonResponse(data, safe=False)
         return JsonResponse({'null': "null"})
 
 
