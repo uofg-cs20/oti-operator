@@ -27,7 +27,7 @@ class OperatorTestCase(TestCase):
         self.maxDiff = None
         print('Operator API Test')
         openT = 'urn:X-opentransport:rels:'
-        response = self.client.get('/api/?operator=1')
+        response = self.client.get('/api/operator/?filterString=1')
         content = json.loads(response.content)
         comparisonDict = [{'catalogue-metadata': [
             {'rel': 'urn:X-hypercat:rels:isContentType', 'val': 'application/vnd.hypercat.catalogue+json'},
@@ -47,7 +47,7 @@ class OperatorTestCase(TestCase):
 
     def test_mode_api(self):
         print('Mode API Test')
-        response = self.client.get('/api/?mode=1')
+        response = self.client.get('/api/mode/?filterString=1')
         content = json.loads(response.content)
         comparisonDict = [{'id': 1, 'short_desc': 'on foot', 'long_desc': 'for complete end-to-end journey mapping'}]
         self.assertEqual(response.status_code, 200)
