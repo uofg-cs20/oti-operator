@@ -1,6 +1,28 @@
-test_app:
+stages:
+  - test
+  - deploy
+
+test:
+    stage: test
+    script:
+        - pip install -r requirements.txt
+        - python manage.py test --pattern="*_test.py"
+
+staging:
+  stage: deploy
+
   script:
-    - pip install -r requirements.txt
-    - cd Website
-    - python manage.py test --pattern="*_test.py"
-    - echo test!
+    - apk update
+    - apk add git
+    - apk add ruby-dev
+    - apk add build-base
+    - apk add curl
+    - gem update --system
+    - gem install dpl
+    - gem install json
+    - gem install bundler
+    - dpl --provider=heroku --app=cs20operator --api-key=9a3e9496-0297-4d0f-85d4-da69348156da
+  only:
+    - deploy
+  tags:
+    - docker

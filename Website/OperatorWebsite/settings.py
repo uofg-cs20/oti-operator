@@ -12,11 +12,14 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,10 +31,9 @@ SECRET_KEY = 'f3pr#%%!_ga49i0e%^wdun07^!umq)x7zy4nd-f1j(tr@dtt$d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cs20operator.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -89,6 +91,8 @@ DATABASES = {
     }
 }
 
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -133,3 +137,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+#django heroku
+if 'HEROKU' in os.environ:
+    import django_heroku
+    django_heroku.settings(locals())
