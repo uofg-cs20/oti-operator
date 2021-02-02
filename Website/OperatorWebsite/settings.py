@@ -29,7 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'f3pr#%%!_ga49i0e%^wdun07^!umq)x7zy4nd-f1j(tr@dtt$d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if os.environ.get('HEROKU') == 'YES':
+    DEBUG = False
+else:
+    DEBUG = True
 
 
 
