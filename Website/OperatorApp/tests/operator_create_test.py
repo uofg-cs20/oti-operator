@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class OperatorTestCase(TestCase):
+
     def setUp(self):
         admin1 = User.objects.create_user(username='TestAdmin', password='1234', email='test@operator.co.uk.',
                                           first_name='Test Admin')

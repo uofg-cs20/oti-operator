@@ -5,3 +5,4 @@ sqlparse==0.3.0
 django-heroku
 gunicorn
 dj-database-url
+coverage

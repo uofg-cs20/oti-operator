@@ -88,10 +88,6 @@ class Base:
         """Returns a LIST of the values of all relations of type rel, since HyperCat allows rels to be repeated"""
         return _values(self.metadata, rel)
 
-    def prettyprint(self):
-        """Return hypercat formatted prettily"""
-        return json.dumps(self.asJSON(), sort_keys=True, indent=4, separators=(',', ': '))
-
     def asJSONstr(self):
         """Return hypercat as a string, of minimum length"""
         return json.dumps(self.asJSON(), sort_keys=True, separators=(',', ':'))
