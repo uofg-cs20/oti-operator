@@ -30,6 +30,7 @@ class OperatorForm(forms.ModelForm):
     )
     homepage = forms.URLField(required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}))
     api_url = forms.URLField(required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    miptaurl = forms.URLField(required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}))
     default_language = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-control'}))
     phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class' : 'form-control'}))
     email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class' : 'form-control'}))
@@ -37,4 +38,4 @@ class OperatorForm(forms.ModelForm):
 
     class Meta:
         model = Operator
-        fields = ['name', 'modes', 'homepage', 'api_url', 'default_language', 'phone', 'email', 'active']
+        fields = ['name', 'modes', 'homepage', 'api_url', 'miptaurl', 'default_language', 'phone', 'email', 'active']

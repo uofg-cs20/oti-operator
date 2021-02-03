@@ -17,7 +17,7 @@ class OperatorTestCase(TestCase):
         self.operator1 = Operator.objects.create(admin=self.admin1, name='TestOperator',
                                                  homepage='https://operator.co.uk',
                                                  api_url='https://test.opentransport.co.uk', phone='07083249084',
-                                                 email='test@operator.co.uk')
+                                                 email='test@operator.co.uk', miptaurl='mipta.operator.co.uk')
 
         on_foot = Mode.objects.get_or_create(short_desc='on foot', long_desc='for complete end-to-end journey mapping')
         on_foot = Mode.objects.get_or_create(short_desc='on foot')[0]
@@ -40,6 +40,7 @@ class OperatorTestCase(TestCase):
                 {'rel': openT+'hasEmail', 'val': 'test@operator.co.uk'}, {'rel': openT+'hasPhone', 'val': '07083249084'},
                 {'rel': openT+'hasDefaultLanguage', 'val': 'English'}, {'rel': openT+'hasNumberModes', 'val': 1},
                 {'rel': openT+'hasNumberMode1#Code', 'val': 1}, {'rel': openT+'hasNumberMode1#Description', 'val': 'on foot'},
+                {'rel': openT+'hasNumberMIPTAURLs', 'val': 1}, {'rel': openT+'hasMIPTAURL', 'val': 'mipta.operator.co.uk'}
                 ]}]}]
 
         self.assertEqual(response.status_code, 200)

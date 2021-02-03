@@ -12,12 +12,13 @@ from .forms import LoginForm, OperatorForm
 from OperatorApp.models import Operator, Mode
 from .Hypercat import hypercat
 
-
 '''
 Checks the data that comes inside params: /api/<params>
 checks the pk value sent and returns specified operator
 also checks for invalid/no pk values and returns entire list 
 '''
+
+
 class OperatorView(View):
 
     def get(self, request):
@@ -32,12 +33,14 @@ class OperatorView(View):
         hc = hypercat.createOperatorHypercat(serialized_operators, Mode.objects.all())
         return JsonResponse(hc, safe=False)
 
+
 class ModeView(View):
 
     def clean_modes(self, modes):
         cleaned_modes = []
         for mode in modes:
-            cleaned_modes.append({'id':mode['pk'], 'short_desc': mode['fields']['short_desc'], 'long_desc': mode['fields']['long_desc']})
+            cleaned_modes.append({'id': mode['pk'], 'short_desc': mode['fields']['short_desc'],
+                                  'long_desc': mode['fields']['long_desc']})
 
         return cleaned_modes
 

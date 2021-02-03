@@ -232,6 +232,8 @@ def createOperatorHypercat(md, modes):
                 h2.addRelation(openT+'hasNumberMode'+str(count)+'#Code', mode)
                 h2.addRelation(openT+'hasNumberMode'+str(count)+'#Description', modes.get(pk=mode).short_desc)
                 count += 1
+        h2.addRelation(openT+'hasNumberMIPTAURLs', 1)
+        h2.addRelation(openT + 'hasMIPTAURL', i['fields']['miptaurl'])
         h.addItem(h2, i['fields']['api_url'])
         no+=1
     return [h.asJSON()]
