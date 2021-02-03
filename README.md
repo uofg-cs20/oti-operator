@@ -33,3 +33,7 @@ password: 1234
 To view the API visit   
 Operators: `http://127.0.0.1:8000/api/?operator=<pk>`   
 Mode: `http://127.0.0.1:8000/api/?mode=<pk>`
+
+Coverage Test Report
+`coverage run --source 'OperatorApp' manage.py test OperatorApp --pattern="*_test.py"`
+`coverage report`
