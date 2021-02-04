@@ -48,8 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'OperatorApp.apps.OperatorappConfig',
+    'OperatorApp',
     'crispy_forms',
+    'django_mutpy',
 ]
 
 MIDDLEWARE = [
