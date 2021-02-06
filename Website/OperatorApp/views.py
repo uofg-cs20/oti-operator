@@ -56,6 +56,10 @@ class ModeView(View):
 
 # login operator
 def operator_login(request):
+    # If the user is logged in, redirect to the operators page
+    if request.user.is_authenticated:
+        return redirect(reverse('operator:operators'))
+
     form = LoginForm()
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -73,15 +77,17 @@ def operator_login(request):
 
 
 # log out operator
-@login_required
 def operator_logout(request):
     logout(request)
     return redirect(reverse('operator:login'))
 
 
 # edit operator profile
-@login_required
 def edit_profile(request):
+    # If the user is not logged in, redirect to the login page
+    if not request.user.is_authenticated:
+        return redirect('operator:login')
+
     operator = Operator.objects.get(admin=request.user)
     form = OperatorForm(instance=operator)
     if request.method == 'POST':
@@ -95,8 +101,11 @@ def edit_profile(request):
 
 
 # display all operators (after an operator logs in)
-@login_required
 def operators(request):
+    # If the user is not logged in, redirect to the login page
+    if not request.user.is_authenticated:
+        return redirect('operator:login')
+
     operator_info = Operator.objects.order_by('name')
     context_dict = {'operators': operator_info}
 
