@@ -51,17 +51,6 @@ CONTAINS_CONTENT_TYPE_RELATION = "urn:X-hypercat:rels:containsContentType"
 
 # We manage Catalogues and Resources as raw Python JSON objects (i.e. we construct them in their final form)
 
-def _values(metadata, rel):
-    """Searches a set <metadata> to find all relations <rel>
-    Returns a list of the values of those relations
-    (A list, because a rel can occur more than once)"""
-    result = []
-    for r in metadata:
-        if(r[REL] == rel):
-            result.append(r[VAL])
-
-    return result
-
 class Base:
     # Functionality common to both Catalogues and Resources
     def __init__(self):
@@ -72,28 +61,9 @@ class Base:
     def addRelation(self, rel, val):
         self.metadata += [{REL:rel, VAL:val}]
 
-    def replaceRelation(self, rel, val):
-        for i in range(len(self.metadata)):
-            if self.metadata[i][REL]==rel:
-                self.metadata[i][REL]=val
-
-    def rels(self):
-        """Returns a LIST of all the metadata relations"""
-        r = []
-        for i in self.metadata:
-            r = r + i[REL]
-        return []
-
-    def values(self, rel):
-        """Returns a LIST of the values of all relations of type rel, since HyperCat allows rels to be repeated"""
-        return _values(self.metadata, rel)
-
     def asJSONstr(self):
         """Return hypercat as a string, of minimum length"""
         return json.dumps(self.asJSON(), sort_keys=True, separators=(',', ':'))
-
-    def isCatalogue(self):
-        return CATALOGUE_TYPE in self.values(ISCONTENTTYPE_RELATION)
 
     def setHref(self,href):
         self.href=href
@@ -103,7 +73,7 @@ class Hypercat(Base):
     # Catalogues must be of type catalogue, have a description, and contain at least an empty array of items
 
     def __init__(self, description):
-        Base.__init__(self)
+        super().__init__()
         assert isinstance(description, basestring), "Description argument must be a string"
         self.metadata = [
             { REL:ISCONTENTTYPE_RELATION, VAL:CATALOGUE_TYPE },
@@ -130,18 +100,6 @@ class Hypercat(Base):
         self.items += [child]           # Add new
         return
 
-    def replaceItem(self, child, href):
-        """Replace an existing child (by matching the href). Guarantees not to change the order of items[]"""
-        assert isinstance(child, Base), "child item must be a hypercat Catalogue or Resource"
-        for i in range(len(self.items)):
-            if(self.items[i].href == href):
-                self.items[i] = child   # Replace existing
-                return
-        assert False, "No such child item to replace as "+href
-
-    def description(self):  # 1.0 spec is unclear about whether there can be more than one description. We assume not.
-        return self.values(DESCRIPTION_RELATION)[0]
-
     def items(self):
         return self.items
 
@@ -154,58 +112,6 @@ class Hypercat(Base):
     def containsContentType(self, contentType):
         self.addRelation(CONTAINS_CONTENT_TYPE_RELATION, contentType)
 
-    def findByPath(self, rel, path):
-        """Traverses children, building a path based on relation <rel>, until given path is found."""
-        if((path=="") or (path=="/")):
-            return(self)
-        (front,dummy,rest) = path.lstrip("/").partition("/")
-        for child in self.items:
-            if front in child.values(rel):
-                return child.findByPath(rel, rest)
-        return None
-
-    def recurse(self, fn, *args):
-        """Calls fn on a hypercat and all its child hypercats (not resources)"""
-        fn(self, *args)
-        for i in self.items:
-            if isinstance(i, Hypercat):
-                self.recurse(i, *args)
-
-class Resource(Base):
-    """Create a valid Hypercat Resource"""
-    # Resources must have an href, have a declared type, and have a description
-    def __init__(self, description, contentType):
-        """contentType must be a string containing an RFC2046 MIME type"""
-        Base.__init__(self)
-        self.metadata = [
-            {REL:ISCONTENTTYPE_RELATION,VAL:contentType},
-            {REL:DESCRIPTION_RELATION,VAL:description}]
-
-    def asJSON(self, asChild=True):
-        # Resources can only be children
-        j = {}
-        j[ITEM_METADATA] = self.metadata
-        j[HREF] = self.href
-        return j
-
-def loads(inputStr):
-    """Takes a string and converts it into an internal hypercat object, with some checking"""
-    inCat = json.loads(inputStr)
-    assert CATALOGUE_TYPE in _values(inCat[CATALOGUE_METADATA], ISCONTENTTYPE_RELATION)
-    # Manually copy mandatory fields, to check that they are they, and exclude other garbage
-    desc = _values(inCat[CATALOGUE_METADATA], DESCRIPTION_RELATION)[0]
-    outCat = Hypercat(desc)
-    for i in inCat[ITEMS]:
-        href = i[HREF]
-        contentType = _values(i[ITEM_METADATA], ISCONTENTTYPE_RELATION) [0]
-        desc = _values(i[ITEM_METADATA], DESCRIPTION_RELATION) [0]
-        if contentType == CATALOGUE_TYPE:
-            r = Hypercat(desc)
-        else:
-            r = Resource(desc, contentType)
-        outCat.addItem(r, href)
-
-    return outCat
 
 
 #md is model dictionary
@@ -233,7 +139,7 @@ def createOperatorHypercat(md, modes):
         h.addItem(h2, i['fields']['api_url'])
         no+=1
     return [h.asJSON()]
-
+#error: unsupported operand type(s) for -: 'str' and 'str'
 
 # if __name__ == '__main__':
     # # Unit tests
