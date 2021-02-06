@@ -20,7 +20,7 @@ Run the server:
 `python manage.py runserver`
 
 Run the tests:  
-`python manage.py test --pattern="*_test.py"`
+`python manage.py test`
 
 Log in as an operator (homepage):  
 username: scotrail / firstbus / citylink (see population script)  
@@ -36,6 +36,7 @@ Mode: `http://127.0.0.1:8000/api/?mode=<pk>`
 
 Run mutation tests: `python manage.py muttest OperatorApp`
 
-Coverage Test Report
-`coverage run --source 'OperatorApp' manage.py test OperatorApp --pattern="*_test.py"`
+Generate test coverage report: 
+`coverage run --source 'OperatorApp' manage.py test OperatorApp`
+, then view the test coverage report: 
 `coverage report`
