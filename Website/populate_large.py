@@ -56,11 +56,20 @@ def populate():
     # Edit Operator 0 to point to Zebras
     zebrasobj = Operator.objects.get(name="Operator 0")
     zebrasobj.name = "Zebras"
-    zebrasobj.homepage = "https://zebras.co.uk"
+    zebrasobj.homepage = "https://cs20team.pythonanywhere.com/"
     zebrasobj.api_url = "https://cs20team.pythonanywhere.com/api/"
-    zebrasobj.miptaurl = "https://mipta.zebrasco.uk"
+    zebrasobj.miptaurl = "https://mipta.zebras.co.uk"
     zebrasobj.modes.set([bus, tram, train])
     Operator.save(zebrasobj)
+    
+    # Edit Operator 1 to point to CS21's customer site
+    cstwentyoneobj = Operator.objects.get(name="Operator 1")
+    cstwentyoneobj.name = "CS21 Customer Site"
+    cstwentyoneobj.homepage = "https://psdbuses.pythonanywhere.com/"
+    cstwentyoneobj.api_url = "https://cs21customerproject.pythonanywhere.com/"
+    cstwentyoneobj.miptaurl = "https://mipta.cs21.co.uk"
+    cstwentyoneobj.modes.set([bus, water_ferry, train, suspended_cable_car])
+    Operator.save(cstwentyoneobj)
 
 
 
