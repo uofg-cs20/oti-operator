@@ -52,6 +52,15 @@ def populate():
         for j in range(random.randint(1, 3)):
             mod.append(random.choice(all_modes))
         op.modes.set(mod)
+        
+    # Edit Operator 0 to point to Zebras
+    zebrasobj = Operator.objects.get(name="Operator 0")
+    zebrasobj.name = "Zebras"
+    zebrasobj.homepage = "https://zebras.co.uk"
+    zebrasobj.api_url = "https://cs20team.pythonanywhere.com/api/"
+    zebrasobj.miptaurl = "https://mipta.zebrasco.uk"
+    zebrasobj.modes.set([bus, tram, train])
+    Operator.save(zebrasobj)
 
 
 
