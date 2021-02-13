@@ -29,7 +29,7 @@ class OperatorView(View):
                 pass
             else:
                 operators_list = Operator.objects.filter(pk=params[0][1])
-        serialized_operators = serialize('python', operators_list)
+        serialized_operators = sorted(serialize('python', operators_list), key=lambda x: x['pk']    )
         hc = hypercat.createOperatorHypercat(serialized_operators, Mode.objects.all())
         return JsonResponse(hc, safe=False)
 
@@ -106,7 +106,7 @@ def operators(request):
     if not request.user.is_authenticated:
         return redirect('operator:login')
 
-    operator_info = Operator.objects.order_by('name')
+    operator_info = Operator.objects.order_by('pk')
     context_dict = {'operators': operator_info}
 
     return render(request, 'OperatorApp/operators.html', context_dict)
