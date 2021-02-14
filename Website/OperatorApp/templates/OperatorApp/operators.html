@@ -28,7 +28,7 @@
             {% for operator in operators %}
             <tr>
               <td>{{ operator.id }}</td>
-              <td>{{ operator.name }}</td>
+              <td style="white-space: nowrap;">{{ operator.name }}</td>
               <td>
                 <ul>
                   {% for mode in operator.modes.all %}
