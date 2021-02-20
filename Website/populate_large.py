@@ -43,7 +43,7 @@ def populate():
     suspended_cable_car = Mode.objects.get_or_create(short_desc='suspended cable car', long_desc="includes any aerial cable cars, such as London 'Emirates Air Line', Barcelona Montjuïc & Port Cable Cars and New York Roosevelt Island Tramway")[0]
     all_modes = [on_foot, cycle, moped_motorbike, scooter, segway, car, bus, tram, metro_subway, train, water_bus, water_ferry, air, car_parking, taxi, suspended_cable_car]
 
-    num = 100
+    num = 30
     User.objects.bulk_create([User(username='user'+str(i), password=make_password('1234', None, 'md5'), email='test@test.co.uk', first_name="Admin " +str(i)) for i in range(num)])
     Operator.objects.bulk_create([Operator(admin=User.objects.filter(username="user"+str(j))[0], name="Operator "+str(j), homepage='https://operator'+str(j)+'.co.uk', api_url='https://opentransport.operator'+str(j)+'.co.uk', phone='07123456789', email='support@operator'+str(j)+'.co.uk', miptaurl="https://mipta.operator"+str(j)+".co.uk") for j in range(num)])
     ops = Operator.objects.all()
