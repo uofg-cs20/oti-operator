@@ -4,59 +4,76 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'OperatorWebsite.settings')
 import django
 django.setup()
 
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from OperatorApp.models import Mode, Operator
 
-def populate():
 
+def choice(all_modes):
+    return random.choice(all_modes)
+
+def populate():
     # delete if the database is already populated
-    if User.objects.filter(username='superuser').exists():
+    if User.objects.filter(username='dev').exists():
         User.objects.all().delete()
     if Mode.objects.all():
-        Mode.objects.all().delete
+        Mode.objects.all().delete()
     if Operator.objects.all():
-        Operator.objects.all().delete
+        Operator.objects.all().delete()
 
-    # superuser account - use this to log into the django admin page
+    # create superuser account - use this to log into the django admin page
     dev = User.objects.create_user(username='dev', password='1234', is_superuser=True, is_staff=True, email="dev@project.com", first_name='dev')
 
-    # operator admin accounts
-    admin1 = User.objects.create_user(username='scotrail', password='1234', email='admin@scotrail.co.uk.', first_name='Scotrail Admin')
-    admin2 = User.objects.create_user(username='citylink', password='1234', email='admin@citylink.co.uk.', first_name='CityLink Admin')
-    admin3 = User.objects.create_user(username='firstbus', password='1234', email='admin@firstbus.co.uk.', first_name='FirstBus Admin')
+    # create modes
+    on_foot = Mode.objects.get_or_create(short_desc='on foot', long_desc='for complete end-to-end journey mapping')[0]
+    cycle = Mode.objects.get_or_create(short_desc='cycle', long_desc='includes both human-powered pedal cycle and ebike, typically rented or shared but also possibly privately owned for complete end-to-end journey mapping')[0]
+    moped_motorbike = Mode.objects.get_or_create(short_desc='moped & motorbike', long_desc='shared & privately-owned self-powered vehicles, for complete end-to-end journey mapping')[0]
+    scooter = Mode.objects.get_or_create(short_desc='scooter', long_desc='includes human and electric/battery powered where passenger steps in/on')[0]
+    segway = Mode.objects.get_or_create(short_desc='segway', long_desc='includes any motorised self-balancing personal platform and also electric unicycles')[0]
+    car = Mode.objects.get_or_create(short_desc='car', long_desc='includes any vehicle where the driver is also a passenger, such as: car / van vehicle rental, car pool & car club')[0]
+    bus = Mode.objects.get_or_create(short_desc='bus', long_desc='includes any vehicle typically greater than 8 seats.. such as a mini bus')[0]
+    tram = Mode.objects.get_or_create(short_desc='tram', long_desc='includes any guided vehicle such as a streetcar and also trolleybuses that are limited by overhead power lines')[0]
+    metro_subway = Mode.objects.get_or_create(short_desc='metro & subway', long_desc='includes any light rail transit and their interconnecting systems')[0]
+    train = Mode.objects.get_or_create(short_desc='train', long_desc='includes intercity, Eurostar / TGV, etc.')[0]
+    water_bus = Mode.objects.get_or_create(short_desc='water bus', long_desc='includes river buses, typically just passenger service with multiple stops')[0]
+    water_ferry = Mode.objects.get_or_create(short_desc='water ferry', long_desc='includes passenger only and also passenger & vehicle')[0]
+    air = Mode.objects.get_or_create(short_desc='air', long_desc='aeroplane, helicopter, etc.')[0]
+    car_parking = Mode.objects.get_or_create(short_desc='car parking', long_desc='includes on-street & off-street (e.g. dedicated building or airport short & long stay)')[0]
+    taxi = Mode.objects.get_or_create(short_desc='taxi', long_desc='includes any vehicle where the driver is NOT a passenger')[0]
+    suspended_cable_car = Mode.objects.get_or_create(short_desc='suspended cable car', long_desc="includes any aerial cable cars, such as London 'Emirates Air Line', Barcelona Montjuïc & Port Cable Cars and New York Roosevelt Island Tramway")[0]
+    all_modes = [on_foot, cycle, moped_motorbike, scooter, segway, car, bus, tram, metro_subway, train, water_bus, water_ferry, air, car_parking, taxi, suspended_cable_car]
+
+    # create users
+    num = 30
+    User.objects.bulk_create([User(username='user'+str(i), password=make_password('1234', None, 'md5'), email='test@test.co.uk', first_name="Admin " +str(i)) for i in range(num)])
     
-    # operator profiles
-    scotrail = Operator.objects.get_or_create(admin=admin1, name='Scotrail', homepage='https://scotrail.co.uk', api_url='https://scotrail.opentransport.co.uk', phone='07083249084', email='support@scotrail.co.uk')[0]
-    citylink = Operator.objects.get_or_create(admin=admin2, name='Citylink', homepage='https://citylink.co.uk', api_url='https://citylink.opentransport.co.uk', phone='117083249084', email='support@citylink.co.uk')[0]   
-    firstbus = Operator.objects.get_or_create(admin=admin3, name='First Bus', homepage='https://firstbus.co.uk', api_url='https://firstbus.opentransport.co.uk', phone='087083249084', email='support@firstbus.co.uk')[0]   
-
-    # modes
-    on_foot = Mode.objects.get_or_create(short_desc='on foot', long_desc='for complete end-to-end journey mapping')
-    cycle = Mode.objects.get_or_create(short_desc='cycle', long_desc='includes both human-powered pedal cycle and ebike, typically rented or shared but also possibly privately owned for complete end-to-end journey mapping')
-    moped_motorbike = Mode.objects.get_or_create(short_desc='moped & motorbike', long_desc='shared & privately-owned self-powered vehicles, for complete end-to-end journey mapping')
-    scooter = Mode.objects.get_or_create(short_desc='scooter', long_desc='includes human and electric/battery powered where passenger steps in/on')
-    segway = Mode.objects.get_or_create(short_desc='segway', long_desc='includes any motorised self-balancing personal platform and also electric unicycles')
-    car = Mode.objects.get_or_create(short_desc='car', long_desc='includes any vehicle where the driver is also a passenger, such as: car / van vehicle rental, car pool & car club')
-    bus = Mode.objects.get_or_create(short_desc='bus', long_desc='includes any vehicle typically greater than 8 seats.. such as a mini bus')
-    tram = Mode.objects.get_or_create(short_desc='tram', long_desc='includes any guided vehicle such as a streetcar and also trolleybuses that are limited by overhead power lines')
-    metro_subway = Mode.objects.get_or_create(short_desc='metro & subway', long_desc='includes any light rail transit and their interconnecting systems')
-    train = Mode.objects.get_or_create(short_desc='train', long_desc='includes intercity, Eurostar / TGV, etc.')
-    water_bus = Mode.objects.get_or_create(short_desc='water bus', long_desc='includes river buses, typically just passenger service with multiple stops')
-    water_ferry = Mode.objects.get_or_create(short_desc='water ferry', long_desc='includes passenger only and also passenger & vehicle')
-    air = Mode.objects.get_or_create(short_desc='air', long_desc='aeroplane, helicopter, etc.')
-    car_parking = Mode.objects.get_or_create(short_desc='car parking', long_desc='includes on-street & off-street (e.g. dedicated building or airport short & long stay)')
-    taxi = Mode.objects.get_or_create(short_desc='taxi', long_desc='includes any vehicle where the driver is NOT a passenger')
-    suspended_cable_car = Mode.objects.get_or_create(short_desc='suspended cable car', long_desc="includes any aerial cable cars, such as London 'Emirates Air Line', Barcelona Montjuïc & Port Cable Cars and New York Roosevelt Island Tramway")
+    # create operators
+    Operator.objects.bulk_create([Operator(admin=User.objects.filter(username="user"+str(j))[0], name="Operator "+str(j), homepage='https://operator'+str(j)+'.co.uk', api_url='https://opentransport.operator'+str(j)+'.co.uk', phone='07123456789', email='support@operator'+str(j)+'.co.uk', miptaurl="https://mipta.operator"+str(j)+".co.uk") for j in range(num)])
+    ops = Operator.objects.all()
+    for op in ops:
+        mod = []
+        for j in range(random.randint(1, 3)):
+            mod.append(random.choice(all_modes))
+        op.modes.set(mod)
+        
+    # Edit Operator 0 to point to Zebras
+    zebrasobj = Operator.objects.get(name="Operator 0")
+    zebrasobj.name = "Zebras"
+    zebrasobj.homepage = "https://cs20team.pythonanywhere.com/"
+    zebrasobj.api_url = "https://cs20team.pythonanywhere.com/api/"
+    zebrasobj.miptaurl = "https://mipta.zebras.co.uk"
+    zebrasobj.modes.set([bus, tram, train])
+    Operator.save(zebrasobj)
     
+    # Edit Operator 1 to point to CS21's customer site
+    cstwentyoneobj = Operator.objects.get(name="Operator 1")
+    cstwentyoneobj.name = "CS21 Customer Site"
+    cstwentyoneobj.homepage = "https://psdbuses.pythonanywhere.com/"
+    cstwentyoneobj.api_url = "https://cs21customerproject.pythonanywhere.com/"
+    cstwentyoneobj.miptaurl = "https://mipta.cs21.co.uk"
+    cstwentyoneobj.modes.set([bus, water_ferry, train, suspended_cable_car])
+    Operator.save(cstwentyoneobj)
 
-    train = Mode.objects.get_or_create(short_desc='train')[0]
-    bus = Mode.objects.get_or_create(short_desc='bus')[0]
-    tram = Mode.objects.get_or_create(short_desc='tram')[0]
-
-    # add modes to operators
-    scotrail.modes.add(train.id)
-    citylink.modes.add(bus.id)
-    firstbus.modes.add(bus.id)
 
 
 if __name__ == '__main__':

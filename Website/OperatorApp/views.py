@@ -21,6 +21,8 @@ also checks for invalid/no pk values and returns entire list
 
 class OperatorView(View):
 
+    # OperatorAPI GET /operator view - returns registered operators in PAS212:2016
+    # compliant format
     def get(self, request):
         params = list(request.GET.items())
         operators_list = Operator.objects.all()
@@ -36,6 +38,7 @@ class OperatorView(View):
 
 class ModeView(View):
 
+    # Returns list of correctly formatted modes
     def clean_modes(self, modes):
         cleaned_modes = []
         for mode in modes:
@@ -44,6 +47,7 @@ class ModeView(View):
 
         return cleaned_modes
 
+    # OperatorAPI GET /mode view - returns available modes of transport
     def get(self, request):
         params = list(request.GET.items())
         modes_list = Mode.objects.all()
@@ -54,7 +58,7 @@ class ModeView(View):
         return JsonResponse(data, safe=False)
 
 
-# login operator
+# Login view
 def operator_login(request):
     # If the user is logged in, redirect to the operators page
     if request.user.is_authenticated:
@@ -63,6 +67,7 @@ def operator_login(request):
     form = LoginForm()
     if request.method == 'POST':
         form = LoginForm(request.POST)
+        # Validate and clean form
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -76,13 +81,13 @@ def operator_login(request):
     return render(request, 'OperatorApp/login.html', {"form": form})
 
 
-# log out operator
+# Logout - redirect to login page
 def operator_logout(request):
     logout(request)
     return redirect(reverse('operator:login'))
 
 
-# edit operator profile
+# Edit operator profile
 def edit_profile(request):
     # If the user is not logged in, redirect to the login page
     if not request.user.is_authenticated:
@@ -92,6 +97,7 @@ def edit_profile(request):
     form = OperatorForm(instance=operator)
     if request.method == 'POST':
         form = OperatorForm(request.POST, instance=operator)
+        # Validate form
         if form.is_valid():
             form.save()
             messages.success(request, "Operator updated successfully.")
@@ -100,7 +106,7 @@ def edit_profile(request):
     return render(request, 'OperatorApp/edit-operator.html', {'form': form})
 
 
-# display all operators (after an operator logs in)
+# Display all operators in a table (after an operator logs in)
 def operators(request):
     # If the user is not logged in, redirect to the login page
     if not request.user.is_authenticated:

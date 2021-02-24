@@ -31,7 +31,6 @@ class OperatorTestCase(TestCase):
 
     def test_operator_exists(self):
         """Operator details are checked"""
-        print("Operator Exists Test")
         operator = Operator.objects.get(name="TestOperator")
         
         self.assertEqual(operator.name, 'TestOperator')

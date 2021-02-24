@@ -5,13 +5,10 @@ from ..forms import OperatorForm
 import json
 import sys, os
 from django.core.serializers import serialize
-
+from ..Hypercat import hypercat
+from ..views import operator_login, edit_profile
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "Hypercat"))
-
-import hypercat
-
-from ..views import operator_login, edit_profile
 
 
 class OperatorTestCase(TestCase):
@@ -30,9 +27,8 @@ class OperatorTestCase(TestCase):
         self.on_foot = Mode.objects.get_or_create(short_desc='on foot')[0]
         self.operator1.modes.add(self.on_foot.id)
 
-    def test_operator_api(self):
+    def test_operator_api_displays_data(self):
         self.maxDiff = None
-        print('Operator API Test')
         openT = 'urn:X-opentransport:rels:'
         response = self.client.get('/api/operator/?filterString=1')
         content = json.loads(response.content)
@@ -40,8 +36,7 @@ class OperatorTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(content, comparisonDict)
 
-    def test_mode_api(self):
-        print('Mode API Test')
+    def test_mode_api_displays_data(self):
         response = self.client.get('/api/mode/?filterString=1')
         content = json.loads(response.content)
         comparisonDict = [{'id': 1, 'short_desc': 'on foot', 'long_desc': 'for complete end-to-end journey mapping'}]
