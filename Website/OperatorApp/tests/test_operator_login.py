@@ -31,12 +31,11 @@ class AuthenticationTestCase(TestCase):
         response = self.client.get(reverse("operator:login"))
         self.assertRedirects(response, reverse("operator:operators"))
 
-    def test_login(self):
-        print("Operator Login Test")
+    def test_login_response(self):
         response = self.client.post('', {"username": 'TestAdmin', "password": "1234"})
         self.assertEqual(response.status_code, 302)
         
-    def test_logout(self):
+    def test_logout_response(self):
         response = self.client.get(reverse("operator:logout"))
         self.assertRedirects(response, reverse("operator:login"))
 

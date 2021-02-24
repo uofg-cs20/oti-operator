@@ -13,6 +13,8 @@ Ensure database structure is up to date:
 `python manage.py makemigrations`  
 `python manage.py migrate`  
 
+## Viewing the Website
+
 Run the population script:  
 `python populate.py`  
 
@@ -31,12 +33,5 @@ username: dev
 password: 1234  
 
 To view the API visit   
-Operators: `http://127.0.0.1:8000/api/?operator=<pk>`   
-Mode: `http://127.0.0.1:8000/api/?mode=<pk>`
-
-Run mutation tests: `python manage.py muttest OperatorApp`
-
-Generate test coverage report: 
-`coverage run --source 'OperatorApp' manage.py test OperatorApp`
-, then view the test coverage report: 
-`coverage report`
+Operators: `http://127.0.0.1:8000/api/operator`   
+Mode: `http://127.0.0.1:8000/api/mode`

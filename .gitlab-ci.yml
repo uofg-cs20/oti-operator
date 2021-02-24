@@ -7,7 +7,7 @@ test:
     script:
         - pip install -r requirements.txt
         - cd Website
-        - python manage.py test --pattern="*_test.py"
+        - python manage.py test
 
 staging:
   stage: deploy

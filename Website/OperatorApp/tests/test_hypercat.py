@@ -25,31 +25,15 @@ import sys
 import os
 import re
 import json
+import hypercat
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "Hypercat"))
 
-import hypercat
-
 class HypercatTest(TestCase):
 
-    #def test_minimal_catalogue(self):
-    #    print("\nTEST: Create a catalogue containing 1 catalogue and 1 resource, held as data")
-    #    h = hypercat.Hypercat("CatalogueContainingOneCatalogueAndOneResource")
-    #    h2 = hypercat.Hypercat("ChildCatalogue")
-    #    print("about to add child catalogue")
-    #    h.addItem(h2, "http://FIXMEcat")
-    #    r = hypercat.Resource("resource1", "application/vnd.hypercat.sensordata+json")
-    #    print("about to add child resource")
-    #    h.addItem(r, "http://FIXMEresource")
-    #    result = h.asJSON()
-    #    self.assertEqual(result, {'items': [{'item-metadata': [{'val': 'application/vnd.hypercat.catalogue+json', 'rel': 'urn:X-hypercat:rels:isContentType'}, {'val': 'ChildCatalogue', 'rel': 'urn:X-hypercat:rels:hasDescription:en'}], 'href': 'http://FIXMEcat'}, {'item-metadata': [{'val': 'application/vnd.hypercat.sensordata+json', 'rel': 'urn:X-hypercat:rels:isContentType'}, {'val': 'resource1', 'rel': 'urn:X-hypercat:rels:hasDescription:en'}], 'href': 'http://FIXMEresource'}], 'catalogue-metadata': [{'val': 'application/vnd.hypercat.catalogue+json', 'rel': 'urn:X-hypercat:rels:isContentType'}, {'val': 'CatalogueContainingOneCatalogueAndOneResource', 'rel': 'urn:X-hypercat:rels:hasDescription:en'}]})
-
     def test_two_deep_catalogue(self):
-        print("\nTEST: Create a catalogue 2 deep (and output each level)")
         h1 = hypercat.Hypercat("Top")
         h2 = hypercat.Hypercat("Middle")
         h3 = hypercat.Hypercat("Bottom")
         h1.addItem(h2, "http://FIXMEcat2")
         h2.addItem(h3, "http://FIXMEcat3")
-
-        print("\nUnit tests all passed OK")
