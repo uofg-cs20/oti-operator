@@ -59,20 +59,29 @@ def populate():
     # Edit Operator 0 to point to Zebras
     zebrasobj = Operator.objects.get(name="Operator 0")
     zebrasobj.name = "Zebras"
-    zebrasobj.homepage = "https://cs20team.pythonanywhere.com/"
-    zebrasobj.api_url = "https://cs20team.pythonanywhere.com/api/"
+    zebrasobj.homepage = "https://cs20customer.herokuapp.com/"
+    zebrasobj.api_url = "https://cs20customer.herokuapp.com/api/"
     zebrasobj.miptaurl = "https://mipta.zebras.co.uk"
-    zebrasobj.modes.set([bus, tram, train])
+    zebrasobj.modes.set([bus, tram, train]) # Set this to Zebras modes
     Operator.save(zebrasobj)
     
     # Edit Operator 1 to point to CS21's customer site
     cstwentyoneobj = Operator.objects.get(name="Operator 1")
-    cstwentyoneobj.name = "CS21 Customer Site"
+    cstwentyoneobj.name = "PSD Buses"
     cstwentyoneobj.homepage = "https://cs21customerproject.pythonanywhere.com/"
     cstwentyoneobj.api_url = "https://psdbuses.pythonanywhere.com/"
     cstwentyoneobj.miptaurl = "https://mipta.cs21.co.uk"
-    cstwentyoneobj.modes.set([bus, water_ferry, train, suspended_cable_car])
+    cstwentyoneobj.modes.set([bus])
     Operator.save(cstwentyoneobj)
+    
+    # Edit Operator 2 to point to Cheetahs
+    cheetahsobj = Operator.objects.get(name="Operator 2")
+    cheetahsobj.name = "Cheetahs"
+    cheetahsobj.homepage = "https://cheetahs.pythonanywhere.com/" # Set this to Cheetahs homepage
+    cheetahsobj.api_url = "https://cheetahs.pythonanywhere.com/api/" # Set this to Cheetahs API URL
+    cheetahsobj.miptaurl = "https://mipta.cheetahs.co.uk"
+    cheetahsobj.modes.set([bus, tram, train]) # Set this to Cheetahs modes
+    Operator.save(cheetahsobj)
 
 
 
