@@ -68,8 +68,8 @@ def populate():
     # Edit Operator 1 to point to CS21's customer site
     cstwentyoneobj = Operator.objects.get(name="Operator 1")
     cstwentyoneobj.name = "CS21 Customer Site"
-    cstwentyoneobj.homepage = "https://psdbuses.pythonanywhere.com/"
-    cstwentyoneobj.api_url = "https://cs21customerproject.pythonanywhere.com/"
+    cstwentyoneobj.homepage = "https://cs21customerproject.pythonanywhere.com/"
+    cstwentyoneobj.api_url = "https://psdbuses.pythonanywhere.com/"
     cstwentyoneobj.miptaurl = "https://mipta.cs21.co.uk"
     cstwentyoneobj.modes.set([bus, water_ferry, train, suspended_cable_car])
     Operator.save(cstwentyoneobj)
