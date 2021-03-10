@@ -62,7 +62,7 @@ def populate():
     zebrasobj.homepage = "https://cs20customer.herokuapp.com/"
     zebrasobj.api_url = "https://cs20customer.herokuapp.com/api/"
     zebrasobj.miptaurl = "https://mipta.zebras.co.uk"
-    zebrasobj.modes.set([bus, tram, train]) # Set this to Zebras modes
+    zebrasobj.modes.set([bus, tram, train])
     Operator.save(zebrasobj)
     
     # Edit Operator 1 to point to CS21's customer site
@@ -77,10 +77,10 @@ def populate():
     # Edit Operator 2 to point to Cheetahs
     cheetahsobj = Operator.objects.get(name="Operator 2")
     cheetahsobj.name = "Cheetahs"
-    cheetahsobj.homepage = "https://cheetahs.pythonanywhere.com/" # Set this to Cheetahs homepage
-    cheetahsobj.api_url = "https://cheetahs.pythonanywhere.com/api/" # Set this to Cheetahs API URL
+    cheetahsobj.homepage = "https://cs20team.pythonanywhere.com/"
+    cheetahsobj.api_url = "https://cs20team.pythonanywhere.com/api/"
     cheetahsobj.miptaurl = "https://mipta.cheetahs.co.uk"
-    cheetahsobj.modes.set([bus, tram, train]) # Set this to Cheetahs modes
+    cheetahsobj.modes.set([bus, tram, train])
     Operator.save(cheetahsobj)
 
 
