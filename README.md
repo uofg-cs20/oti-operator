@@ -6,7 +6,7 @@ This project was to implement the Open Transport API and create a proof of conce
 
 ## Main Functionality
 
-This repository contains the Operator website, which implements the Operator API (https://app.swaggerhub.com/apis/open-transport/operator-info/1.1.0). It can be populated with dummy operator data, to illustrate the purpose of the website - i.e. a transport operator lookup. Once logged in, there are 2 main pages:
+This repository contains the Operator website, which implements the Operator API (https://app.swaggerhub.com/apis/open-transport/operator-info/1.1.0). It can be populated with dummy operator data, to illustrate the purpose of the website - i.e. a transport operator lookup. You can create an account on the Register page, or log in to your account on the Login page. Once logged in, there are 2 main pages:
 - Operators - for viewing a complete list of transport operators, and their details
 - Edit Profile - for updating your details
 
