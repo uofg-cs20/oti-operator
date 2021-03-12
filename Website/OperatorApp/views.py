@@ -4,11 +4,12 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import success
 from django.views import View
 from django.core.serializers import serialize
 from django.contrib import messages
 
-from .forms import LoginForm, OperatorForm
+from .forms import LoginForm, OperatorForm, RegisterForm
 from OperatorApp.models import Operator, Mode
 from .Hypercat import hypercat
 
@@ -58,6 +59,40 @@ class ModeView(View):
         return JsonResponse(data, safe=False)
 
 
+# Register view
+def register(request):
+    if request.method == 'POST':
+        user_form = RegisterForm(request.POST)
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            user.set_password(user.password)
+            user.save()
+
+            # Create new operator object
+            newop_name = user_form.cleaned_data['operator_name']
+            newop_homepage = user_form.cleaned_data['homepage']
+            newop_api_url = user_form.cleaned_data['api_url']
+            newop_miptaurl = user_form.cleaned_data['miptaurl']
+            newop_modes = user_form.cleaned_data['modes']
+            newop_phone = user_form.cleaned_data['phone']
+            newop_email = user_form.cleaned_data['email']
+            newop = Operator.objects.create(admin=User.objects.get(username=user.username), name=newop_name, homepage=newop_homepage, api_url=newop_api_url, miptaurl=newop_miptaurl, phone=newop_phone, email=newop_email)
+            newop.modes.set(newop_modes)
+
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            success(request, f"Congratulations, {user.username}! You've registered successfully!")
+            return redirect(reverse('operator:operators'))
+        else:
+            print(user_form.errors)
+    else:
+        user_form = RegisterForm()
+
+    context = {
+        'registration_form': user_form,
+    }
+    return render(request, 'OperatorApp/register.html', context)
+
+
 # Login view
 def operator_login(request):
     # If the user is logged in, redirect to the operators page
@@ -76,7 +111,7 @@ def operator_login(request):
 
             login(request, user)
 
-            return redirect(reverse('operator:operators'))
+            return redirect(reverse('operator:edit'))
 
     return render(request, 'OperatorApp/login.html', {"form": form})
 
