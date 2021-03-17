@@ -14,16 +14,41 @@ test:
 staging:
   stage: deploy
 
+  before_script:
+  ##
+   ## Install ssh-agent if not already installed, it is required by Docker.
+   ## (change apt-get to yum if you use an RPM-based image)
+   ##
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+
+   ##
+   ## Run ssh-agent (inside the build environment)
+   ##
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+
+    - ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+
+
   script:
     - apk update
     - apk add git
     - apk add ruby-dev
     - apk add build-base
     - apk add curl
+    - ssh git@github.com
+    - git remote add github git@github.com:uofg-cs20/oti-operator.git
+    - git push --mirror github
     - gem update --system
     - gem install dpl
     - gem install json
     - gem install bundler
     - dpl --provider=heroku --app=cs20operator --api-key=$HEROKUKEY
+    - 
   tags:
     - docker
