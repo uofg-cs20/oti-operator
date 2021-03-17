@@ -2,19 +2,7 @@ stages:
   - test
   - deploy
 
-test:
-    stage: test
-    script:
-        - pip install -r requirements.txt
-        - cd Website
-        - python manage.py makemigrations
-        - python manage.py migrate
-        - python manage.py test
-
-staging:
-  stage: deploy
-
-  before_script:
+before_script:
   ##
    ## Install ssh-agent if not already installed, it is required by Docker.
    ## (change apt-get to yum if you use an RPM-based image)
@@ -33,7 +21,17 @@ staging:
     - ssh-keyscan github.com >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
 
+test:
+    stage: test
+    script:
+        - pip install -r requirements.txt
+        - cd Website
+        - python manage.py makemigrations
+        - python manage.py migrate
+        - python manage.py test
 
+staging:
+  stage: deploy
 
   script:
     - apk update
