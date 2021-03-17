@@ -2,25 +2,6 @@ stages:
   - test
   - deploy
 
-before_script:
-  ##
-   ## Install ssh-agent if not already installed, it is required by Docker.
-   ## (change apt-get to yum if you use an RPM-based image)
-   ##
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
-
-   ##
-   ## Run ssh-agent (inside the build environment)
-   ##
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-
-    - ssh-keyscan github.com >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-
 test:
     stage: test
     script:
@@ -39,6 +20,20 @@ staging:
     - apk add ruby-dev
     - apk add build-base
     - apk add curl
+    - apk add openssh-client
+
+
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+
+    - ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+    
+    
     - ssh git@github.com
     - git remote add github git@github.com:uofg-cs20/oti-operator.git
     - git push --mirror github
