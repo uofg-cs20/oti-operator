@@ -1,0 +1,44 @@
+{% extends 'OperatorApp/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Edit
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+  <h1 class="text-center my-4">Edit Operator</h1>
+
+  <table class="card table mx-auto" style="width: 25em;">
+      <form method='post' action="{% url 'operator:edit' %}">
+          {% csrf_token %}
+          <tr>
+              <th>
+          {% for field in form %}
+              {% if field.label != 'Modes' %}
+              {{ field.label }}: {{ field }}
+              {% endif %}
+              {% endfor %}
+              </th>
+            <th>
+                {{ form.modes.label }}
+                <br/>
+          {% for field in form.modes %}
+                <span style="font-weight:normal">{{ field }}</span><br/>
+              {% endfor %}
+            </th>
+          </tr>
+          <th class="text-center" colspan="2">
+              <button type="submit" class="btn btn-md btn-primary">Save</button>
+          </th>
+      </form>
+    </table>
+  </div>
+
+{% endblock %}
+  
+
+
+
